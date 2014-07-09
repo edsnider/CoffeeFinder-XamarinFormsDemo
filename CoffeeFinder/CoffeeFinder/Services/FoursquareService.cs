@@ -11,8 +11,8 @@ namespace CoffeeFinder.Services
     public class FoursquareService : IFoursquareService
     {
         #region Foursquare API client props
-        private const string _CLIENT_ID = "MHZODVIJAWGPYYGJTWCO1ES1O0YNBDSSWZ2RYJGWNAJKBWZM";
-        private const string _CLIENT_SECRET = "W0UTXELUUW25REED0TLZYC5YLIXYYZ4EX4VO0IVKYCEZYVMC";
+        private const string _CLIENT_ID = "";
+        private const string _CLIENT_SECRET = "";
         #endregion
 
         public async Task<VenuesResponse> GetVenues(string query, GeoCoords coords)
