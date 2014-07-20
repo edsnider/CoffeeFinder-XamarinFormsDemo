@@ -10,6 +10,23 @@ namespace CoffeeFinder.Views
         {
             BindingContext = viewModel;
 
+            var stack = new StackLayout
+            {
+                Orientation = StackOrientation.Vertical,
+                Padding = new Thickness(0, 10)
+            };
+
+            var progress = new ActivityIndicator
+            {
+                IsEnabled = true,
+                Color = Color.White
+            };
+
+            progress.SetBinding(IsVisibleProperty, "IsBusy");
+            progress.SetBinding(ActivityIndicator.IsRunningProperty, "IsBusy");
+
+            stack.Children.Add(progress);
+
             var listView = new ListView {ItemsSource = viewModel.Venues};
 
             var itemTemplate = new DataTemplate(typeof (TextCell));
@@ -17,7 +34,9 @@ namespace CoffeeFinder.Views
             itemTemplate.SetBinding(TextCell.DetailProperty, "Address.City");
             listView.ItemTemplate = itemTemplate;
 
-            Content = listView;
+            stack.Children.Add(listView);
+
+            Content = stack;
         }
     }
 }
