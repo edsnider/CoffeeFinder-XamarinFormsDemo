@@ -9,6 +9,7 @@ namespace CoffeeFinder.ViewModels
     public class MainViewModel : BaseViewModel
     {
         private readonly IFoursquareService _foursquare;
+        private readonly ILocationService _location;
 
         private ObservableCollection<Venue> _venues;
         public ObservableCollection<Venue> Venues
@@ -21,12 +22,24 @@ namespace CoffeeFinder.ViewModels
             }
         }
 
+        private GeoCoords _currentLocation;
+        public GeoCoords CurrentLocation
+        {
+            get { return _currentLocation; }
+            set
+            {
+                _currentLocation = value;
+                OnPropertyChanged();
+            }
+        }
+
         public MainViewModel()
         {
             Venues = new ObservableCollection<Venue>();
 
             // TODO: constructor injection
             _foursquare = new FoursquareService();
+            _location = DependencyService.Get<ILocationService>();
         }
 
         private Command _refreshCommand;
@@ -38,6 +51,10 @@ namespace CoffeeFinder.ViewModels
         private async Task ExecuteRefreshCommand()
         {
             if (IsBusy) return;
+
+            //CurrentLocation  = new GeoCoords { Latitude = 38.954577, Longitude = -77.346357 }; // Reston VA
+            CurrentLocation = await _location.GetGeoCoordinatesAsync();
+            MessagingCenter.Send(this, "LocationSet");
 
             await LoadVenues();
         }
@@ -51,8 +68,7 @@ namespace CoffeeFinder.ViewModels
 
             try
             {
-                var coords = new GeoCoords { Latitude = 38.954577, Longitude = -77.346357 }; // Reston VA
-                var response = await _foursquare.GetVenues("coffee", coords);
+                var response = await _foursquare.GetVenues("coffee", CurrentLocation);
 
                 foreach (var v in response.Venues)
                     Venues.Add(v);

@@ -17,10 +17,15 @@ namespace CoffeeFinder.Views
 
             var stack = new StackLayout();
 
-            var map = new Map(MapSpan.FromCenterAndRadius(new Position(38.954577, -77.346357), Distance.FromMiles(0.3)))
+            var map = new Map { IsShowingUser = true };
+            
+            // Subscribe to message from MainViewModel and move map to current location when it's set
+            MessagingCenter.Subscribe<MainViewModel>(this, "LocationSet", s =>
             {
-                IsShowingUser = true
-            };
+                var currentLocation = _vm.CurrentLocation;
+                map.MoveToRegion(MapSpan.FromCenterAndRadius(new Position(currentLocation.Latitude, currentLocation.Longitude),
+                                                                          Distance.FromMiles(0.3)));
+            });
 
             // Subscribe to message from the MainViewModel and add pins to the map once the Venues collection is loaded
             MessagingCenter.Subscribe<MainViewModel>(this, "VenuesLoaded", s =>
