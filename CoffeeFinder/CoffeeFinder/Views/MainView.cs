@@ -16,7 +16,7 @@ namespace CoffeeFinder.Views
 
             var refresh = new ToolbarItem
             {
-                Name = "refresh",
+				Text = "refresh",
                 Icon = "refresh.png",
                 Command = _vm.RefreshCommand,
                 Priority = 0

@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Resources;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
+using CoffeeFinder.WP8.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using CoffeeFinder.WP8.Resources;
 
 namespace CoffeeFinder.WP8
 {
